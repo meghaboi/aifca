@@ -1,37 +1,70 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# AIFCA Frontend (Part 1)
 
-## Getting Started
+Next.js 14 frontend for AIFCA with:
+- Public landing page
+- GitHub SSO auth pages
+- Protected dashboard shell and routes
+- Design system tokens, motifs, and skeleton loading
 
-First, run the development server:
+## Local Development
 
+1. Install dependencies:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm ci
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Add local env:
+```bash
+cp .env.example .env.local
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. Generate Prisma client:
+```bash
+npx prisma generate
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+4. Run app:
+```bash
+npm run dev
+```
 
-## Learn More
+## Quality Checks
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+npm run lint
+npm run build
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Azure Production Deploy (GitHub Actions)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+This repo deploys on each `main` push via:
+- `.github/workflows/deploy-main.yml`
 
-## Deploy on Vercel
+### Required GitHub Secret
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- `AZURE_WEBAPP_PUBLISH_PROFILE_AIFCA_PROD`
+  - Value: publish profile XML for Azure Web App `aifca-meghaboi`
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+### Required Azure App Settings
 
+- `NEXT_PUBLIC_APP_URL`
+- `NEXT_PUBLIC_APP_NAME`
+- `NEXTAUTH_URL`
+- `NEXTAUTH_SECRET`
+- `GITHUB_CLIENT_ID`
+- `GITHUB_CLIENT_SECRET`
+- `DATABASE_URL`
+- `AZURE_AI_FOUNDRY_ENDPOINT`
+- `AZURE_AI_FOUNDRY_API_KEY`
+- `AZURE_AI_FOUNDRY_DEPLOYMENT`
+- `AZURE_AI_FOUNDRY_API_VERSION`
+
+### Azure Runtime Settings
+
+- `SCM_DO_BUILD_DURING_DEPLOYMENT=true`
+- `WEBSITE_NODE_DEFAULT_VERSION=~20`
+
+## Notes
+
+- Footer includes: `Made by Meghanadh`
+- Deployment target is `https://aifca-meghaboi.azurewebsites.net`
